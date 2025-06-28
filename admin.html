@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <div class="home-container">
+    <h1>Admin Dashboard</h1>
+    <button id="logout-btn">Logout</button>
+
+    <h2>Registered Users</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody"></tbody>
+    </table>
+
+    <h2>Generated Codes</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Code Type</th>
+          <th>Code</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody id="codeTableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const db = firebase.firestore();
+
+    const allowedAdminEmails = ["admin@example.com"];
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user || !allowedAdminEmails.includes(user.email)) {
+        alert("Unauthorized access. Redirecting...");
+        window.location.href = "index.html";
+      } else {
+        loadUserData();
+        loadCodeData();
+      }
+    });
+
+    function loadUserData() {
+      const table = document.getElementById("userTableBody");
+      db.collection("users").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const row = `<tr>
+            <td>${data.name || "-"}</td>
+            <td>${data.username || "-"}</td>
+            <td>${data.email}</td>
+            <td>${data.phone || "-"}</td>
+          </tr>`;
+          table.innerHTML += row;
+        });
+      });
+    }
+
+    function loadCodeData() {
+      const table = document.getElementById("codeTableBody");
+      db.collection("codes").orderBy("createdAt", "desc").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const row = `<tr>
+            <td>${data.userId}</td>
+            <td>${data.codeType}</td>
+            <td>${data.code}</td>
+            <td>${data.createdAt?.toDate().toLocaleString() || "-"}</td>
+          </tr>`;
+          table.innerHTML += row;
+        });
+      });
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    });
+  </script>
+</body>
+</html>
