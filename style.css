@@ -27,11 +27,18 @@ body, html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 300px;
 }
 
 .auth-left h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
+  text-align: center;
+}
+
+.auth-left p {
+  font-size: 1rem;
+  text-align: center;
 }
 
 .auth-right {
@@ -41,6 +48,7 @@ body, html {
   justify-content: center;
   align-items: center;
   padding: 2rem;
+  min-height: 300px;
 }
 
 form {
@@ -51,6 +59,7 @@ form {
 form h2 {
   margin-bottom: 1rem;
   color: #0f172a;
+  text-align: center;
 }
 
 input {
@@ -59,6 +68,7 @@ input {
   margin: 0.5rem 0;
   border: 1px solid #ccc;
   border-radius: 6px;
+  font-size: 1rem;
 }
 
 button {
@@ -71,6 +81,12 @@ button {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: #143046;
+  transition: 0.3s;
 }
 
 a {
@@ -79,14 +95,28 @@ a {
   display: block;
   margin-top: 1rem;
   text-align: center;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
   .auth-container {
     flex-direction: column;
+    height: auto;
   }
-  .auth-left {
+
+  .auth-left, .auth-right {
+    flex: unset;
+    width: 100%;
     padding: 2rem;
+    min-height: auto;
+  }
+
+  .auth-left h2, .auth-left p {
+    text-align: center;
+  }
+
+  form {
+    padding: 1rem;
   }
 }
 
@@ -100,4 +130,15 @@ a {
   margin-top: 1rem;
   font-size: 1.2rem;
   color: #174e68;
+}
+
+@media (max-width: 480px) {
+  input, button {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+
+  #codeDisplay {
+    font-size: 1rem;
+  }
 }
