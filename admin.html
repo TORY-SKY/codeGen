@@ -49,6 +49,16 @@
 
   <script>
     const db = firebase.firestore();
+    function showToast(message, type = "success") {
+  Toastify({
+    text: message,
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    backgroundColor: type === "success" ? "#4caf50" : "#f44336", // green or red
+    close: true
+  }).showToast();
+}
 
     const allowedAdminEmails = ["admin@example.com"];
 
