@@ -64,7 +64,7 @@
 
     firebase.auth().onAuthStateChanged((user) => {
       if (!user || !allowedAdminEmails.includes(user.email)) {
-        alert("Unauthorized access. Redirecting...");
+        showToast("Unauthorized access. Redirecting...", "error");
         window.location.href = "index.html";
       } else {
         loadUserData();

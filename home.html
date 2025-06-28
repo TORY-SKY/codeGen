@@ -29,10 +29,22 @@
     <hr />
     <button onclick="generateCode('Launch-time')">Launch-time</button>
     <button onclick="generateCode('Teatime')">Teatime</button>
+
     <div id="codeDisplay"></div>
   </header>
 
   <script>
+    //toast notification
+function showToast(message, type = "success") {
+  Toastify({
+    text: message,
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    backgroundColor: type === "success" ? "#4caf50" : "#f44336", // green or red
+    close: true
+  }).showToast();
+}
     const logoutBtn = document.getElementById('logout-btn');
     const codeDisplay = document.getElementById('codeDisplay');
 
@@ -45,12 +57,15 @@
     });
 
     function generateCode(type) {
-      const uniqueCode = `${type.toUpperCase()}-${Date.now().toString().slice(-6)}`;
+      const UUIDcode = crypto.randomUUID().split('-')[0];
+      const uniqueCode = `${type.toUpperCase()}-${UUIDcode.slice(-10)}`;
       codeDisplay.textContent = `Generated Code: ${uniqueCode}`;
+      
 
       // Simulate "send to admin"
       console.log(`Code sent to admin via WhatsApp: ${uniqueCode}`);
-      alert(`Code sent to admin: ${uniqueCode}`);
+      showToast(`Code sent to admin: successfully`, "success");
+      return uniqueCode;
     }
   </script>
   
