@@ -1,6 +1,21 @@
 // Firestore init
 const db = firebase.firestore();
 
+
+
+
+//toast notification
+function showToast(message, type = "success") {
+  Toastify({
+    text: message,
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    backgroundColor: type === "success" ? "#4caf50" : "#f44336", // green or red
+    close: true
+  }).showToast();
+}
+
 // Signup
 const signupForm = document.getElementById("signup-form");
 if (signupForm) {
@@ -27,9 +42,10 @@ if (signupForm) {
         });
       })
       .then(() => {
+        showToast("user successfully created")
         window.location.href = "home.html";
       })
-      .catch(err => alert(err.message));
+      .catch(err => showToast(err.message, 'error'));
   });
 }
 
@@ -44,6 +60,6 @@ if (loginForm) {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(() => window.location.href = "home.html")
-      .catch(err => alert(err.message));
+      .catch(err => showToast(err.message, 'error'));
   });
 }
